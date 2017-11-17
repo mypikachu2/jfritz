@@ -154,6 +154,7 @@ public class PropertyProvider {
 		defProps.setProperty("options.exportCSVpath", ".");//$NON-NLS-1$, //$NON-NLS-2$
 		defProps.setProperty("options.exportXMLpath", ".");//$NON-NLS-1$, //$NON-NLS-2$
 		defProps.setProperty("options.exportCSVpathOfPhoneBook", ".");//$NON-NLS-1$, //$NON-NLS-2$
+		defProps.setProperty("options.exportXMLpathOfPhoneBook", "."); // 17.11.2017
 		defProps.setProperty("server.name", "");//$NON-NLS-1$, //$NON-NLS-2$
 		defProps.setProperty("server.port", "4455");//$NON-NLS-1$, //$NON-NLS-2$
 		defProps.setProperty("server.login", "");//$NON-NLS-1$, //$NON-NLS-2$
