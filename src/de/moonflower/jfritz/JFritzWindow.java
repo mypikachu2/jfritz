@@ -625,6 +625,12 @@ public class JFritzWindow extends JFrame implements Runnable, ActionListener,
 		item.addActionListener(this);
 		exportMenu.add(item);
 
+		// 17.11.2017
+		item = new JMenuItem(messages.getMessage("export_xml_phonebook")); //$NON-NLS-1$
+		item.setActionCommand("export_xml_phonebook"); //$NON-NLS-1$
+		item.addActionListener(this);
+		exportMenu.add(item);
+
 		jfritzMenu.add(exportMenu);
 
 		// import submenu
@@ -1088,6 +1094,9 @@ public class JFritzWindow extends JFrame implements Runnable, ActionListener,
 			}
 		} else if (e.getActionCommand().equals("export_phonebook")) {
 			exportPhoneBookToCSV();
+// 17.11.2017
+		} else if (e.getActionCommand().equals("export_xml_phonebook")) {
+			exportPhoneBookToXML();
 		} else if (e.getActionCommand().equals("print_callerlist")) {
 			printCallerList();
 		} else if (e.getActionCommand().equals("import_outlook")) {
@@ -1475,6 +1484,54 @@ public class JFritzWindow extends JFrame implements Runnable, ActionListener,
 				JFritz.getPhonebook().saveToCSVFile(file.getAbsolutePath(),
 						phoneBookPanel.getPhoneBookTable().getSelectedRows(),
 						';');
+			}
+		}
+	}
+
+// 17.11.2017
+	public void exportPhoneBookToXML() {
+		// FIXME selbst wenn die callerlist aktiviert ist können im
+		// phonebook einträge ausgewählt sein, dann werden nur diese
+		// exportiert, das kann für verwirrung sorgen.
+		JFileChooser fc = new JFileChooser(properties.getProperty(
+				"options.exportXMLpathOfPhoneBook")); //$NON-NLS-1$
+		fc.setDialogTitle(messages.getMessage("export_xml_phonebook")); //$NON-NLS-1$
+		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+		fc.setSelectedFile(new File(JFritz.PHONEBOOK_XML_FILE));
+		fc.setFileFilter(new FileFilter() {
+			public boolean accept(File f) {
+				return f.isDirectory()
+						|| f.getName().toLowerCase().endsWith(".xml"); //$NON-NLS-1$
+			}
+
+			public String getDescription() {
+				return messages.getMessage("xml_files"); //$NON-NLS-1$
+			}
+		});
+		if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			String path = fc.getSelectedFile().getPath();
+			path = path.substring(0, path.length()
+					- fc.getSelectedFile().getName().length());
+			properties.setProperty("options.exportXMLpathOfPhoneBook", path); //$NON-NLS-1$
+			File file = fc.getSelectedFile();
+			if (file.exists()) {
+				if (JOptionPane.showConfirmDialog(this, messages.getMessage(
+						"overwrite_file").replaceAll("%F", file.getName()), //$NON-NLS-1$, //$NON-NLS-2$
+						messages.getMessage("dialog_title_overwrite_file"), //$NON-NLS-1$
+						JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+// 17.11.2017
+//					JFritz.getPhonebook().saveToCSVFile(
+//							file.getAbsolutePath(),
+//							phoneBookPanel.getPhoneBookTable()
+//									.getSelectedRows(), ';');
+					JFritz.getPhonebook().saveToXMLFile(file.getAbsolutePath());
+				}
+			} else {
+// 17.11.2017
+//				JFritz.getPhonebook().saveToCSVFile(file.getAbsolutePath(),
+//						phoneBookPanel.getPhoneBookTable().getSelectedRows(),
+//						';');
+				JFritz.getPhonebook().saveToXMLFile(file.getAbsolutePath());
 			}
 		}
 	}
