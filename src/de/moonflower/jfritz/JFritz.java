@@ -71,6 +71,8 @@ public final class JFritz implements  StatusListener {
 
 	public final static String PHONEBOOK_CSV_FILE = "contacts.csv"; //$NON-NLS-1$
 
+	public final static String PHONEBOOK_XML_FILE = "contacts.xml"; // 17.11.2017
+
 	private static JFritzWindow jframe;
 
 	private static CallerList callerlist;
