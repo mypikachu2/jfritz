@@ -281,7 +281,8 @@ public class PhoneNumberOld implements Serializable {
 				// International number
 				|| isSIPNumber() // SIP Number
 				|| isEmergencyCall() // Emergency
-				|| isQuickDial()) // FritzBox QuickDial
+				|| isQuickDial() // FritzBox QuickDial
+				|| isFbTcode()) // FritzBox Telefon Code 27.11.2017
 		{
 			return number;
 		} else if (countryPrefix != null && number.startsWith(countryPrefix)) {// International call
@@ -535,6 +536,22 @@ public class PhoneNumberOld implements Serializable {
 			type = "sip"; //$NON-NLS-1$
 		else
 			type = "home"; //$NON-NLS-1$
+	}
+
+	public boolean isFbTcode() { // FritzBox Telefon Code 27.11.2017
+		if (number.startsWith("#96") && number.length() >= 2) {
+			return true;
+		} else {
+			if (number.startsWith("#31#") || number.startsWith("*31#") || number.startsWith("*31*") || number.startsWith("#31*")) {
+				return true;
+			} else {
+				if ( (number.startsWith("**") && number.length() >= 2) || (number.startsWith("*#") && number.length() >= 2) || (number.startsWith("#1") && number.length() >= 2) || (number.startsWith("#") && number.length() >= 2) || (number.startsWith("*") && number.length() >= 2) ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 	}
 
 	/**
